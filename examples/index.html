@@ -1,0 +1,67 @@
+<div>
+	<h3>Inject</h3>
+	<div id="inject"></div>
+</div>
+<div>
+	<h3>Invoke</h3>
+	<div id="invoke"></div>
+</div>
+<div>
+	<h3>Call</h3>
+	<div id="call"></div>
+</div>
+<div>
+	<h3>Singleton</h3>
+	<div>
+		<ul id="singleton">
+		</ul>
+	</div>
+</div>
+<script type="text/javascript" src="ioc.js"></script>
+<script type="text/javascript">
+	var ioc = new IOC();
+	ioc.$set("var1", "mr sandman");
+	ioc.$set("var2", 12 * 5);
+	ioc.$set("var3", "hello");
+	ioc.$set("var4", "*****");
+	ioc.$set("fun", function () {
+		return "HELLO";
+	});
+	ioc.$inject("var2", "var1", function (myvar, myvar2) {
+		var str = "<ul>";
+		str += "<li> var2: " + myvar + "</li>";
+		str += "<li> var1: " + myvar2 + "</li>";
+		str += "</li>";
+		document.getElementById("inject").innerHTML = str;
+	});
+	ioc.$invoke(["var2", "var4", "var3", "var1"],  function(name0, name1, name2, name3) {
+		var str = "<ul>";
+		str += "<li> var2: " + name0 + "</li>";
+		str += "<li> var4: " + name1 + "</li>";
+		str += "<li> var3: " + name2 + "</li>";
+		str += "<li> var1: " + name3 + "</li>";
+		str += "</li>";
+		document.getElementById("invoke").innerHTML = str;
+	});
+	ioc.$call(function(var1, var4, fun) {
+		var str = "<ul>";
+		str += "<li> var1: " + var1 + "</li>";
+		str += "<li> var4: " + var4 + "</li>";
+		str += "<li> fun: " + fun + "</li>";
+		str += "</li>";
+		document.getElementById("call").innerHTML = str;
+	});
+	ioc.$singleton("timeNow", function() {
+		return new Date().getTime();
+	});
+	var singl = document.getElementById("singleton");
+	var tries = 5; 
+	var itv = setInterval(function() {
+		ioc.$invoke(["timeNow"], function(t) {
+			singl.insertAdjacentHTML('beforeend', "<li>" + t + "</li>");
+			if(--tries <= 0) {
+				clearInterval(itv);
+			}
+		});
+	}, 2500);
+</script>
