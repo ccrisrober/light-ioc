@@ -19,7 +19,8 @@ interface IIOC {
 }
 declare class IOC implements IIOC {
     private _data;
-    constructor();
+    protected _case_sens: boolean;
+    constructor(case_sens?: boolean);
     /**
      * Get value from IOC container
      * @param {string} key Name of resource
@@ -72,6 +73,7 @@ declare class IOC implements IIOC {
     $singleton(key: string, fn: Function): this;
     $factory(key: string, args: Array<any>, fn: Function): this;
     $provider(key: string, args: Array<any>, fn: Function): this;
+    protected depthName(depth: string): string;
     protected _getArgs(fn: Function): Array<string>;
     _item(key: string): any;
     protected _has(key: string): boolean;

@@ -29,8 +29,11 @@ var IOCDepNotFound = (function (_super) {
 }(Error));
 ;
 var IOC = (function () {
-    function IOC() {
+    function IOC(case_sens) {
+        if (case_sens === void 0) { case_sens = false; }
+        this._case_sens = false;
         this._data = {};
+        this._case_sens = case_sens;
     }
     /**
      * Get value from IOC container
@@ -41,6 +44,7 @@ var IOC = (function () {
         if (typeof key !== "string") {
             throw new TypeError("key argument must be a string");
         }
+        key = this.depthName(key);
         if (!this._has(key)) {
             throw new IOCDepNotFound(key);
         }
@@ -58,6 +62,7 @@ var IOC = (function () {
         if (typeof key !== "string") {
             throw new TypeError("key argument must be a string");
         }
+        key = this.depthName(key);
         if ((check_exist === true) && (this._has(key))) {
             console.warn("Key " + key + " is already defined ...");
         }
@@ -139,6 +144,7 @@ var IOC = (function () {
         if (typeof fn !== "function") {
             throw new TypeError("key argument must be a function");
         }
+        key = this.depthName(key);
         var eval_func;
         this._data[key] = function () {
             if (!eval_func) {
@@ -153,6 +159,7 @@ var IOC = (function () {
         if (typeof key !== "string") {
             throw new TypeError("key argument must be a string");
         }
+        key = this.depthName(key);
         var self = this;
         var eval_func;
         this._data[key] = function () {
@@ -168,6 +175,7 @@ var IOC = (function () {
         if (typeof key !== "string") {
             throw new TypeError("key argument must be a string");
         }
+        key = this.depthName(key);
         var self = this;
         var eval_func;
         this._data[key] = function () {
@@ -181,6 +189,12 @@ var IOC = (function () {
         return this;
     };
     // ================= PROTECTED ================= //
+    IOC.prototype.depthName = function (depth) {
+        if (this._case_sens === true) {
+            depth = depth.toLowerCase();
+        }
+        return depth;
+    };
     IOC.prototype._getArgs = function (fn) {
         // First match everything inside the function argument parens.
         var args = fn.toString().match(/function\s.*?\(([^)]*)\)/)[1];
@@ -199,6 +213,7 @@ var IOC = (function () {
         if (typeof key !== "string") {
             throw new TypeError("key argument must be a string");
         }
+        key = this.depthName(key);
         if (this._has(key)) {
             return this._data[key];
         }
@@ -208,6 +223,7 @@ var IOC = (function () {
         if (typeof key !== "string") {
             throw new TypeError("key argument must be a string");
         }
+        key = this.depthName(key);
         return (key in this._data) === true;
     };
     IOC.prototype._getAll = function () {

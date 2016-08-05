@@ -1,5 +1,6 @@
 # light-IOC
-Simple Inversion of Control module from my NodeJS Framework. <br />
+Simple Inversion of Control module from my NodeJS Framework.
+
 This library works with any project based on JavaScript, both web and server.
 
 ## About
@@ -60,3 +61,4 @@ try {
 - [x] $factory
 - [x] Testing
 - [x] Documentation
+- [x] Case sensitive On/Off (Default: false)

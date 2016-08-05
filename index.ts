@@ -15,10 +15,10 @@
 //
 
 class IOCDepNotFound extends Error {
-    public name = "IOCDepNotFound";
-    constructor (public message?: string) {
-        super(message);
-    }
+	public name = "IOCDepNotFound";
+	constructor (public message?: string) {
+		super(message);
+	}
 }
 
 interface IIOC {
@@ -41,8 +41,10 @@ interface IIOC {
 
 class IOC implements IIOC{
 	private _data : { [key:string]:any; };
-	constructor() {
+	protected _case_sens: boolean = false;
+	constructor(case_sens: boolean = false) {
 		this._data = {};
+		this._case_sens = case_sens;
 	}
 	/**
 	 * Get value from IOC container
@@ -53,6 +55,7 @@ class IOC implements IIOC{
 		if(typeof key !== "string") {
 			throw new TypeError("key argument must be a string");
 		}
+		key = this.depthName(key);
 		if(!this._has(key)) {
 			throw new IOCDepNotFound(key);
 		}
@@ -70,6 +73,7 @@ class IOC implements IIOC{
 		if(typeof key !== "string") {
 			throw new TypeError("key argument must be a string");
 		}
+		key = this.depthName(key);
 		if((check_exist === true) && (this._has(key))) {
 			console.warn("Key " + key + " is already defined ...");
 		}
@@ -147,6 +151,7 @@ class IOC implements IIOC{
 		if(typeof fn !== "function") {
 			throw new TypeError("key argument must be a function");
 		}
+		key = this.depthName(key);
 		var eval_func;
 		this._data[key] = function() {
 			if(!eval_func) {
@@ -162,6 +167,7 @@ class IOC implements IIOC{
 		if(typeof key !== "string") {
 			throw new TypeError("key argument must be a string");
 		}
+		key = this.depthName(key);
 		var self = this;
 		var eval_func;
 		this._data[key] = () => {
@@ -177,19 +183,26 @@ class IOC implements IIOC{
 		if(typeof key !== "string") {
 			throw new TypeError("key argument must be a string");
 		}
+		key = this.depthName(key);
 		var self = this;
 		var eval_func;
 		this._data[key] = () => {
 			if(!eval_func) {
 				var arr = args;
 				args.push(fn);
-                eval_func = self.$inject.apply(self, arr);
+				eval_func = self.$inject.apply(self, arr);
 			}
 			return eval_func;
 		}
 		return this;
 	}
 	// ================= PROTECTED ================= //
+	protected depthName(depth: string) : string {
+		if(this._case_sens === true) {
+			depth = depth.toLowerCase();
+		}
+		return depth;
+	}
 	protected _getArgs(fn: Function) : Array<string> {
 		// First match everything inside the function argument parens.
 		var args : string = fn.toString().match(/function\s.*?\(([^)]*)\)/)[1];
@@ -209,6 +222,7 @@ class IOC implements IIOC{
 		if(typeof key !== "string") {
 			throw new TypeError("key argument must be a string");
 		}
+		key = this.depthName(key);
 		if(this._has(key)) {
 			return this._data[key];
 		}
@@ -218,6 +232,7 @@ class IOC implements IIOC{
 		if(typeof key !== "string") {
 			throw new TypeError("key argument must be a string");
 		}
+		key = this.depthName(key);
 		return (key in this._data) === true;
 	}
 	protected _getAll(): { [key:string]:any; } {

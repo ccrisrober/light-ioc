@@ -4,8 +4,8 @@ var IOC = require("../index");
 describe("IOCGeneration", function() {
 	var ioc;
 	before(function() {
-		ioc = new IOC();
-		ioc.$set("var1", "mr sandman");
+		ioc = new IOC(true);
+		ioc.$set("VAR1", "mr sandman");
 		ioc.$set("var2", 12 * 5);
 		ioc.$set("var3", "hello");
 		ioc.$set("var4", "*****");
