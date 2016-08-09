@@ -16,6 +16,7 @@ interface IIOC {
     $singleton(key: string, fn: Function): any;
     $provider(key: string, args: Array<any>, fn: Function): any;
     $factory(key: string, args: Array<any>, fn: Function): any;
+    $constant(key: string, value: any): any;
 }
 declare class IOC implements IIOC {
     private _data;
@@ -73,6 +74,7 @@ declare class IOC implements IIOC {
     $singleton(key: string, fn: Function): this;
     $factory(key: string, args: Array<any>, fn: Function): this;
     $provider(key: string, args: Array<any>, fn: Function): this;
+    $constant(key: string, value: any): this;
     protected depthName(depth: string): string;
     protected _getArgs(fn: Function): Array<string>;
     _item(key: string): any;

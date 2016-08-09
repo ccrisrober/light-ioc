@@ -188,6 +188,12 @@ var IOC = (function () {
         };
         return this;
     };
+    // TODO: Documentation
+    IOC.prototype.$constant = function (key, value) {
+        return this.$singleton(key, function () {
+            return value;
+        });
+    };
     // ================= PROTECTED ================= //
     IOC.prototype.depthName = function (depth) {
         if (this._case_sens === true) {

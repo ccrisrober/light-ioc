@@ -33,6 +33,7 @@ interface IIOC {
 	$singleton(key: string, fn: Function);
 	$provider(key: string, args: Array<any>, fn: Function);
 	$factory(key: string, args: Array<any>, fn: Function);
+	$constant(key: string, value: any);
 	//has(key: string);
 	//item(key: string)
 	//getAll();
@@ -195,6 +196,12 @@ class IOC implements IIOC{
 			return eval_func;
 		}
 		return this;
+	}
+	// TODO: Documentation
+	public $constant(key: string, value: any) {
+		return this.$singleton(key, function() {
+			return value;
+		});
 	}
 	// ================= PROTECTED ================= //
 	protected depthName(depth: string) : string {

@@ -1,21 +1,33 @@
 {
   "name": "light-ioc",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Simple IOC module for web and server",
   "main": "index.js",
-  "scripts": {
-    "test": "mocha tests",
-    "docu": "documentation build -e js -f html -o ./documentation -g"
+  "directories": {
+    "example": "examples",
+    "test": "tests",
+    "js": "tsc --declaration index.ts"
   },
-  "author": "maldicion069 <ccrisrober@gmail.com>",
-  "license": "ISC",
+  "scripts": {
+    "test": "mocha tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maldicion069/light-ioc.git"
+  },
   "keywords": [
     "typescript",
     "vanilla",
     "ioc"
   ],
+  "author": "maldicion069 <ccrisrober@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maldicion069/light-ioc/issues"
+  },
+  "homepage": "https://github.com/maldicion069/light-ioc#readme",
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.0.0"
+    "mocha": "^3.0.2"
   }
 }
